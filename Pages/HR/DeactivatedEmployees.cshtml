@@ -1,0 +1,74 @@
+@page
+@model EmployeeManagement.Pages.HR.DeactivatedEmployeesModel
+@{
+    ViewData["Title"] = "Deactivated Employees";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h2>Deactivated Employees</h2>
+            
+            <!-- Back Button -->
+            <div class="row mb-3">
+                <div class="col-12">
+                    <a href="/HR/Dashboard" class="btn btn-secondary">Back to HR Dashboard</a>
+                </div>
+            </div>
+
+            <!-- Deactivated Employee List -->
+            <div class="card">
+                <div class="card-header">
+                    <h5>Deactivated Employee List (@Model.DeactivatedEmployees.Count)</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.DeactivatedEmployees.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Employee ID</th>
+                                        <th>Name</th>
+                                        <th>Username</th>
+                                        <th>Designation</th>
+                                        <th>Department</th>
+                                        <th>Contact</th>
+                                        <th>Joining Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var employee in Model.DeactivatedEmployees)
+                                    {
+                                        <tr class="table-secondary">
+                                            <td>@employee.EmployeeId</td>
+                                            <td>@employee.FirstName @employee.LastName</td>
+                                            <td>@employee.Username</td>
+                                            <td>@employee.Designation</td>
+                                            <td>@employee.Department</td>
+                                            <td>@employee.ContactNumber</td>
+                                            <td>@employee.DateOfJoining.ToString("dd/MM/yyyy")</td>
+                                            <td>
+                                                <form method="post" asp-page-handler="ReactivateEmployee" asp-route-id="@employee.EmployeeId" class="d-inline" onsubmit="return confirm('Reactivate employee @employee.FirstName @employee.LastName?')">
+                                                    <button type="submit" class="btn btn-sm btn-success">Reactivate</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <h6>No deactivated employees</h6>
+                            <p>All employees are currently active.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

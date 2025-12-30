@@ -1,0 +1,109 @@
+@page
+@model EmployeeManagement.Pages.Employee.ApplyLeaveModel
+@using EmployeeManagement.Models
+@{
+    ViewData["Title"] = "Apply for Leave";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Apply for Leave - @Model.EmployeeName</h4>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                        <div class="alert alert-danger">
+                            @Model.ErrorMessage
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+                    {
+                        <div class="alert alert-success">
+                            @Model.SuccessMessage
+                        </div>
+                    }
+
+                    <form method="post">
+                        <input type="hidden" asp-for="LeaveRequest.EmployeeId" />
+                        
+                        <div class="mb-3">
+                            <label asp-for="LeaveRequest.LeaveType" class="form-label">Leave Type</label>
+                            <select asp-for="LeaveRequest.LeaveType" class="form-select" required>
+                                <option value="">Select Leave Type</option>
+                                <option value="@LeaveType.Casual">Casual Leave</option>
+                                <option value="@LeaveType.Sick">Sick Leave</option>
+                                <option value="@LeaveType.Other">Other</option>
+                            </select>
+                            <span asp-validation-for="LeaveRequest.LeaveType" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="LeaveRequest.StartDate" class="form-label">Start Date</label>
+                                    <input asp-for="LeaveRequest.StartDate" type="date" class="form-control" required />
+                                    <span asp-validation-for="LeaveRequest.StartDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="LeaveRequest.EndDate" class="form-label">End Date</label>
+                                    <input asp-for="LeaveRequest.EndDate" type="date" class="form-control" required />
+                                    <span asp-validation-for="LeaveRequest.EndDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="LeaveRequest.Reason" class="form-label">Reason</label>
+                            <textarea asp-for="LeaveRequest.Reason" class="form-control" rows="3" required placeholder="Please provide a detailed reason for your leave application"></textarea>
+                            <span asp-validation-for="LeaveRequest.Reason" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex">
+                            <button type="submit" class="btn btn-primary">Submit Application</button>
+                            <a href="/Employee/Dashboard" class="btn btn-secondary">Back to Dashboard</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6>Recent Applications</h6>
+                </div>
+                <div class="card-body">
+                    @if (Model.RecentApplications.Any())
+                    {
+                        @foreach (var leave in Model.RecentApplications)
+                        {
+                            <div class="mb-2 p-2 border rounded">
+                                <small>
+                                    <strong>@leave.LeaveType</strong><br>
+                                    @leave.StartDate.ToString("dd/MM/yyyy") - @leave.EndDate.ToString("dd/MM/yyyy")<br>
+                                    <span class="badge @(leave.Status == LeaveStatus.Approved ? "bg-success" : leave.Status == LeaveStatus.Rejected ? "bg-danger" : "bg-warning")">
+                                        @leave.Status
+                                    </span>
+                                </small>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted">No recent applications</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

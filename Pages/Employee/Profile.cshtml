@@ -1,0 +1,65 @@
+@page
+@model EmployeeManagement.Pages.Employee.ProfileModel
+@{
+    ViewData["Title"] = "Employee Profile";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Employee Profile</h4>
+                </div>
+                <div class="card-body">
+                    @if (Model.CurrentEmployee != null)
+                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Personal Information</h6>
+                                <p><strong>Employee ID:</strong> @Model.CurrentEmployee.EmployeeId</p>
+                                <p><strong>Name:</strong> @Model.CurrentEmployee.FirstName @Model.CurrentEmployee.LastName</p>
+                                <p><strong>Username:</strong> @Model.CurrentEmployee.Username</p>
+                                <p><strong>Contact:</strong> @Model.CurrentEmployee.ContactNumber</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Work Information</h6>
+                                <p><strong>Designation:</strong> @Model.CurrentEmployee.Designation</p>
+                                <p><strong>Department:</strong> @Model.CurrentEmployee.Department</p>
+                                <p><strong>Date of Joining:</strong> @Model.CurrentEmployee.DateOfJoining.ToString("dd/MM/yyyy")</p>
+                            </div>
+                        </div>
+
+                        @if (Model.CurrentUser != null)
+                        {
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <h6>Account Information</h6>
+                                    <p><strong>Email:</strong> @Model.CurrentUser.Email</p>
+                                    <p><strong>Role:</strong> @Model.CurrentUser.Role</p>
+                                    <p><strong>Status:</strong> 
+                                        <span class="badge @(Model.CurrentUser.IsActive ? "bg-success" : "bg-danger")">
+                                            @(Model.CurrentUser.IsActive ? "Active" : "Inactive")
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">
+                            <h6>Profile not found</h6>
+                            <p>Unable to load employee profile information.</p>
+                        </div>
+                    }
+
+                    <div class="mt-4">
+                        <a href="/Employee/Dashboard" class="btn btn-primary">Back to Dashboard</a>
+                        <a href="/Employee/PunchHistory" class="btn btn-outline-info">View Punches</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

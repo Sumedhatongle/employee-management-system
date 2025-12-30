@@ -1,0 +1,99 @@
+@page
+@model EmployeeManagement.Pages.HR.ManageLeavesModel
+@using EmployeeManagement.Models
+@{
+    ViewData["Title"] = "Manage Leaves";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h2>Manage Leave Requests</h2>
+            
+            <!-- Filter Buttons -->
+            <div class="row mb-3">
+                <div class="col-12">
+                    <a href="/HR/ManageLeaves?status=Pending" class="btn @(Model.StatusFilter == "Pending" ? "btn-warning" : "btn-outline-warning")">Pending (@Model.LeaveRequests.Count(l => l.Status == LeaveStatus.Pending))</a>
+                    <a href="/HR/ManageLeaves?status=Approved" class="btn @(Model.StatusFilter == "Approved" ? "btn-success" : "btn-outline-success")">Approved</a>
+                    <a href="/HR/ManageLeaves?status=Rejected" class="btn @(Model.StatusFilter == "Rejected" ? "btn-danger" : "btn-outline-danger")">Rejected</a>
+                    <a href="/HR/ManageLeaves?status=All" class="btn @(Model.StatusFilter == "All" ? "btn-primary" : "btn-outline-primary")">All</a>
+                    <a href="/HR/Dashboard" class="btn btn-secondary">Back to Dashboard</a>
+                </div>
+            </div>
+
+            <!-- Leave Requests -->
+            <div class="card">
+                <div class="card-header">
+                    <h5>@Model.StatusFilter Leave Requests (@Model.LeaveRequests.Count)</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.LeaveRequests.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Employee</th>
+                                        <th>Leave Type</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Days</th>
+                                        <th>Reason</th>
+                                        <th>Applied On</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var leave in Model.LeaveRequests)
+                                    {
+                                        <tr>
+                                            <td>@leave.EmployeeName</td>
+                                            <td>@leave.LeaveType</td>
+                                            <td>@leave.StartDate.ToString("dd/MM/yyyy")</td>
+                                            <td>@leave.EndDate.ToString("dd/MM/yyyy")</td>
+                                            <td>@leave.Days</td>
+                                            <td>
+                                                <span title="@leave.Reason">
+                                                    @(leave.Reason.Length > 50 ? leave.Reason.Substring(0, 50) + "..." : leave.Reason)
+                                                </span>
+                                            </td>
+                                            <td>@leave.AppliedOn.ToString("dd/MM/yyyy")</td>
+                                            <td>
+                                                <span class="badge @(leave.Status == LeaveStatus.Approved ? "bg-success" : leave.Status == LeaveStatus.Rejected ? "bg-danger" : "bg-warning")">
+                                                    @leave.Status
+                                                </span>
+                                            </td>
+                                            <td>
+                                                @if (leave.Status == LeaveStatus.Pending)
+                                                {
+                                                    <form method="post" asp-page-handler="Approve" asp-route-id="@leave.LeaveId" class="d-inline me-1">
+                                                        <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Approve this leave request?')">Approve</button>
+                                                    </form>
+                                                    <form method="post" asp-page-handler="Reject" asp-route-id="@leave.LeaveId" class="d-inline">
+                                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Reject this leave request?')">Reject</button>
+                                                    </form>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">No actions</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <h6>No @Model.StatusFilter.ToLower() leave requests</h6>
+                            <p>There are no @Model.StatusFilter.ToLower() leave requests at this time.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

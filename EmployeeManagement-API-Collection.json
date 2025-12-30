@@ -1,0 +1,260 @@
+{
+	"info": {
+		"_postman_id": "employee-management-api",
+		"name": "Employee Management API",
+		"description": "Complete API collection for Employee Management System with JWT authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5000",
+			"type": "string"
+		},
+		{
+			"key": "jwtToken",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login (Get JWT Token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('jwtToken', response.token);",
+									"    console.log('JWT Token saved:', response.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/mobile/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "mobile", "auth", "login"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Employee Management",
+			"item": [
+				{
+					"name": "Create Employee (HR Only)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"john.doe\",\n  \"email\": \"john@company.com\",\n  \"password\": \"password123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"designation\": \"Developer\",\n  \"department\": \"IT\",\n  \"costCenter\": \"IT001\",\n  \"dateOfJoining\": \"2025-01-01\",\n  \"contactNumber\": \"1234567890\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/mobile/employees",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "mobile", "employees"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Punch Management",
+			"item": [
+				{
+					"name": "Punch IN",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"punchType\": \"IN\",\n  \"location\": \"Office Main Entrance\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/mobile/punch",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "mobile", "punch"]
+						}
+					}
+				},
+				{
+					"name": "Punch OUT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"punchType\": \"OUT\",\n  \"location\": \"Office Main Entrance\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/mobile/punch",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "mobile", "punch"]
+						}
+					}
+				},
+				{
+					"name": "Get Punch History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/mobile/punches",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "mobile", "punches"]
+						}
+					}
+				},
+				{
+					"name": "Get Punch History (Date Range)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/mobile/punches?from=2025-01-01&to=2025-01-31",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "mobile", "punches"],
+							"query": [
+								{
+									"key": "from",
+									"value": "2025-01-01"
+								},
+								{
+									"key": "to",
+									"value": "2025-01-31"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Testing & Verification",
+			"item": [
+				{
+					"name": "Test JWT Generation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/test/jwt",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "test", "jwt"]
+						}
+					}
+				},
+				{
+					"name": "Test Protected Endpoint",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/test/protected",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "test", "protected"]
+						}
+					}
+				},
+				{
+					"name": "Test HR-Only Endpoint",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/test/hr-only",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "test", "hr-only"]
+						}
+					}
+				},
+				{
+					"name": "Verify Database Data",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/mobile/verify-data",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "mobile", "verify-data"]
+						}
+					}
+				}
+			]
+		}
+	]
+}

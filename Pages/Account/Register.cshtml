@@ -1,0 +1,125 @@
+@page
+@model EmployeeManagement.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="text-center">Employee Registration</h4>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                        <div class="alert alert-danger">
+                            @Model.ErrorMessage
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+                    {
+                        <div class="alert alert-success">
+                            @Model.SuccessMessage
+                        </div>
+                    }
+
+                    <form method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="RegisterRequest.Username" class="form-label">Username</label>
+                                    <input asp-for="RegisterRequest.Username" class="form-control" required />
+                                    <span asp-validation-for="RegisterRequest.Username" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="RegisterRequest.Email" class="form-label">Email</label>
+                                    <input asp-for="RegisterRequest.Email" type="email" class="form-control" required />
+                                    <span asp-validation-for="RegisterRequest.Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="RegisterRequest.Password" class="form-label">Password</label>
+                            <input asp-for="RegisterRequest.Password" type="password" class="form-control" required />
+                            <span asp-validation-for="RegisterRequest.Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="RegisterRequest.FirstName" class="form-label">First Name</label>
+                                    <input asp-for="RegisterRequest.FirstName" class="form-control" required />
+                                    <span asp-validation-for="RegisterRequest.FirstName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="RegisterRequest.LastName" class="form-label">Last Name</label>
+                                    <input asp-for="RegisterRequest.LastName" class="form-control" required />
+                                    <span asp-validation-for="RegisterRequest.LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="RegisterRequest.Designation" class="form-label">Designation</label>
+                                    <input asp-for="RegisterRequest.Designation" class="form-control" required />
+                                    <span asp-validation-for="RegisterRequest.Designation" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="RegisterRequest.Department" class="form-label">Department</label>
+                                    <input asp-for="RegisterRequest.Department" class="form-control" required />
+                                    <span asp-validation-for="RegisterRequest.Department" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="RegisterRequest.ContactNumber" class="form-label">Contact Number</label>
+                                    <input asp-for="RegisterRequest.ContactNumber" class="form-control" required />
+                                    <span asp-validation-for="RegisterRequest.ContactNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="RegisterRequest.DateOfJoining" class="form-label">Date of Joining</label>
+                                    <input asp-for="RegisterRequest.DateOfJoining" type="date" class="form-control" required />
+                                    <span asp-validation-for="RegisterRequest.DateOfJoining" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="RegisterRequest.CostCenter" class="form-label">Cost Center (Optional)</label>
+                            <input asp-for="RegisterRequest.CostCenter" class="form-control" />
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-3">
+                        <p>Already have an account? <a href="/Account/Login">Login here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

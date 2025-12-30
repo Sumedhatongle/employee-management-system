@@ -1,0 +1,130 @@
+@page
+@model EmployeeManagement.Pages.HR.EditEmployeeModel
+@{
+    ViewData["Title"] = "Edit Employee";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Edit Employee</h4>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                        <div class="alert alert-danger">
+                            @Model.ErrorMessage
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+                    {
+                        <div class="alert alert-success">
+                            @Model.SuccessMessage
+                        </div>
+                    }
+
+                    <form method="post">
+                        <input type="hidden" asp-for="EmployeeRequest.EmployeeId" />
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="EmployeeRequest.Username" class="form-label">Username</label>
+                                    <input asp-for="EmployeeRequest.Username" class="form-control" required />
+                                    <span asp-validation-for="EmployeeRequest.Username" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="EmployeeRequest.Email" class="form-label">Email</label>
+                                    <input asp-for="EmployeeRequest.Email" type="email" class="form-control" required />
+                                    <span asp-validation-for="EmployeeRequest.Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="EmployeeRequest.FirstName" class="form-label">First Name</label>
+                                    <input asp-for="EmployeeRequest.FirstName" class="form-control" required />
+                                    <span asp-validation-for="EmployeeRequest.FirstName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="EmployeeRequest.LastName" class="form-label">Last Name</label>
+                                    <input asp-for="EmployeeRequest.LastName" class="form-control" required />
+                                    <span asp-validation-for="EmployeeRequest.LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="EmployeeRequest.Designation" class="form-label">Designation</label>
+                                    <input asp-for="EmployeeRequest.Designation" class="form-control" required />
+                                    <span asp-validation-for="EmployeeRequest.Designation" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="EmployeeRequest.Department" class="form-label">Department</label>
+                                    <input asp-for="EmployeeRequest.Department" class="form-control" required />
+                                    <span asp-validation-for="EmployeeRequest.Department" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="EmployeeRequest.ContactNumber" class="form-label">Contact Number</label>
+                                    <input asp-for="EmployeeRequest.ContactNumber" class="form-control" required />
+                                    <span asp-validation-for="EmployeeRequest.ContactNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="EmployeeRequest.DateOfJoining" class="form-label">Date of Joining</label>
+                                    <input asp-for="EmployeeRequest.DateOfJoining" type="date" class="form-control" required />
+                                    <span asp-validation-for="EmployeeRequest.DateOfJoining" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="EmployeeRequest.CostCenter" class="form-label">Cost Center</label>
+                                    <input asp-for="EmployeeRequest.CostCenter" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input asp-for="EmployeeRequest.IsActive" class="form-check-input" type="checkbox" />
+                                        <label asp-for="EmployeeRequest.IsActive" class="form-check-label">Active</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex">
+                            <button type="submit" class="btn btn-primary">Update Employee</button>
+                            <a href="/HR/Dashboard" class="btn btn-secondary">Back to Dashboard</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

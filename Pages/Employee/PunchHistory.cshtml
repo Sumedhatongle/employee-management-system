@@ -1,0 +1,85 @@
+@page
+@model EmployeeManagement.Pages.Employee.PunchHistoryModel
+@using EmployeeManagement.Models
+@{
+    ViewData["Title"] = "Punch History";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Punch History - @Model.EmployeeName</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Date Filter -->
+                    <form method="get" class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <label for="from" class="form-label">From Date</label>
+                            <input type="date" class="form-control" name="from" value="@Model.FromDate.ToString("yyyy-MM-dd")" />
+                        </div>
+                        <div class="col-md-4">
+                            <label for="to" class="form-label">To Date</label>
+                            <input type="date" class="form-control" name="to" value="@Model.ToDate.ToString("yyyy-MM-dd")" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">&nbsp;</label>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Filter</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Punch Records -->
+                    @if (Model.Punches.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Type</th>
+                                        <th>Location</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var punch in Model.Punches)
+                                    {
+                                        <tr>
+                                            <td>@punch.Timestamp.ToString("dd/MM/yyyy")</td>
+                                            <td>@punch.Timestamp.ToString("HH:mm:ss")</td>
+                                            <td>
+                                                <span class="badge @(punch.PunchType == PunchType.IN ? "bg-success" : "bg-danger")">
+                                                    @punch.PunchType
+                                                </span>
+                                            </td>
+                                            <td>@punch.Location</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="mt-3">
+                            <p class="text-muted">Total Records: @Model.Punches.Count</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <h6>No punch records found</h6>
+                            <p>No punch records found for the selected date range.</p>
+                        </div>
+                    }
+
+                    <div class="mt-4">
+                        <a href="/Employee/Dashboard" class="btn btn-primary">Back to Dashboard</a>
+                        <a href="/Employee/Profile" class="btn btn-outline-info">View Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

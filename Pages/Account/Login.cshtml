@@ -1,0 +1,60 @@
+@page
+@model EmployeeManagement.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="text-center">Employee Management System</h4>
+                    <h5 class="text-center text-muted">Login</h5>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                        <div class="alert alert-danger">
+                            @Model.ErrorMessage
+                        </div>
+                    }
+
+                    <form method="post">
+                        <div class="mb-3">
+                            <label asp-for="LoginRequest.Username" class="form-label">Username</label>
+                            <input asp-for="LoginRequest.Username" class="form-control" required />
+                            <span asp-validation-for="LoginRequest.Username" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="LoginRequest.Password" class="form-label">Password</label>
+                            <input asp-for="LoginRequest.Password" type="password" class="form-control" required />
+                            <span asp-validation-for="LoginRequest.Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-3">
+                        <p>Don't have an account? <a href="/Account/Register">Register here</a></p>
+                    </div>
+
+                    <div class="mt-4">
+                        <h6>Demo Credentials:</h6>
+                        <small class="text-muted">
+                            HR: admin / admin123<br>
+                            Employee: Create via HR Dashboard
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

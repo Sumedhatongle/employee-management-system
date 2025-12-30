@@ -1,0 +1,155 @@
+@page
+@model EmployeeManagement.Pages.Employee.DashboardModel
+@using EmployeeManagement.Models
+@{
+    ViewData["Title"] = "Employee Dashboard";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h2>Employee Dashboard</h2>
+            
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="alert alert-success alert-dismissible fade show">
+                    @Model.Message
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <!-- Employee Info -->
+            @if (Model.CurrentEmployee != null)
+            {
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Welcome, @Model.CurrentEmployee.FirstName @Model.CurrentEmployee.LastName</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Employee ID:</strong> @Model.CurrentEmployee.EmployeeId</p>
+                                <p><strong>Designation:</strong> @Model.CurrentEmployee.Designation</p>
+                                <p><strong>Department:</strong> @Model.CurrentEmployee.Department</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Contact:</strong> @Model.CurrentEmployee.ContactNumber</p>
+                                <p><strong>Joining Date:</strong> @Model.CurrentEmployee.DateOfJoining.ToString("dd/MM/yyyy")</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- Punch In/Out Section -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Punch In/Out</h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="mb-3">
+                                <h6>Current Time: <span id="currentTime"></span></h6>
+                                <p>Last Punch: <strong>@Model.LastPunchType</strong></p>
+                            </div>
+                            
+                            <form method="post">
+                                <div class="d-grid gap-2">
+                                    @if (Model.LastPunchType != "IN")
+                                    {
+                                        <button type="submit" asp-page-handler="Punch" asp-route-punchType="IN" 
+                                                class="btn btn-success btn-lg">
+                                            Punch IN
+                                        </button>
+                                    }
+                                    
+                                    @if (Model.LastPunchType == "IN")
+                                    {
+                                        <button type="submit" asp-page-handler="Punch" asp-route-punchType="OUT" 
+                                                class="btn btn-danger btn-lg">
+                                            Punch OUT
+                                        </button>
+                                    }
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Today's Punches -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Today's Punches</h5>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.TodayPunches.Any())
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Type</th>
+                                                <th>Time</th>
+                                                <th>Location</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var punch in Model.TodayPunches)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <span class="badge @(punch.PunchType == PunchType.IN ? "bg-success" : "bg-danger")">
+                                                            @punch.PunchType
+                                                        </span>
+                                                    </td>
+                                                    <td>@punch.Timestamp.ToString("HH:mm:ss")</td>
+                                                    <td>@punch.Location</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <p class="text-muted">No punches recorded today.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Quick Actions</h5>
+                        </div>
+                        <div class="card-body">
+                            <a href="/Employee/Profile" class="btn btn-outline-primary me-2">View Profile</a>
+                            <a href="/Employee/PunchHistory" class="btn btn-outline-info me-2">Punch History</a>
+                            <a href="/Employee/ApplyLeave" class="btn btn-outline-success me-2">Apply Leave</a>
+                            @if (User.IsInRole("HR"))
+                            {
+                                <a href="/HR/Dashboard" class="btn btn-outline-secondary me-2">HR Dashboard</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateTime() {
+        const now = new Date();
+        document.getElementById('currentTime').textContent = now.toLocaleTimeString();
+    }
+    
+    updateTime();
+    setInterval(updateTime, 1000);
+</script>
