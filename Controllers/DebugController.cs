@@ -10,6 +10,11 @@ namespace EmployeeManagement.Controllers
         public IActionResult Test()
         {
             Console.WriteLine("=== DEBUG CONTROLLER TEST METHOD CALLED ===");
+            Console.WriteLine("=== DEBUG CONTROLLER TEST METHOD CALLED ===");
+                        Console.WriteLine("=== DEBUG CONTROLLER TEST METHOD CALLED ===");
+
+                        Console.WriteLine("=== DEBUG CONTROLLER TEST METHOD CALLED ===");
+
             throw new Exception("Debug breakpoint!"); // This will force debugger to stop
             var message = "Breakpoint hit!"; 
             Console.WriteLine($"Message: {message}");
